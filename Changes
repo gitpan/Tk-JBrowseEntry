@@ -48,4 +48,9 @@ Revision history for "ptkftp".
 4.49	 -not released.
 4.50	 Fri Nov 28, 2003
 	- Minor tweeks in relief appearance.
+4.52  Tue Feb 01, 2005
+	- Added "-altbinding" option to allow different keyboard binding schemata.
+	- Added "-disabledbackground" and "-disabledforeground" options.
+	- Fixed "-labelPack" option to work, if packed above or below main widget.
+	- Fixed small glitch in listbox vertical sizing.
 

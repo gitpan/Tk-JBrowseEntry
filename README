@@ -2,7 +2,8 @@ NAME
     JBrowseEntry is a full-featured "Combo-box" (Text-entry combined with
     drop-down listbox.  
 
-	Copyright (c) 2001, 2002, 2003 by Jim Turner, All rights reservered.  
+	Copyright (c) 2001, 2002, 2003, 2004, 2005 by Jim Turner, 
+	All rights reservered.  
 	JBrowseEntry  is licenced under the same licence as Perl itself.
 
 DESCRIPTION
@@ -41,7 +42,7 @@ For quick screen-shots / examples, do:
 	
 	-or- 
 	
-	visit  http://turnerville.wwol.com/jim
+	visit  http://home.mesh.net/turnerjw/jim
 
 For more docs & examples, simply do:
 

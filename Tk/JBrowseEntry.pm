@@ -4,7 +4,7 @@
 =head1 NAME
 
 JBrowseEntry is a full-featured "Combo-box" (Text-entry combined with drop-down 
-listbox.
+listbox).
 
 =head1 DESCRIPTION
 
@@ -45,6 +45,142 @@ One can optionally specify a label (-label), similar to the "LabEntry" widget.
 By default, the label appears packed to the left of the widget.  The 
 positioning can be specified via the "-labelPack" option.  For example, to 
 position the label above the widget, use "-labelPack => [-side => 'top']".
+
+=head1 OPTIONS
+
+JBrowseEntry supports 5 different states:
+
+=over 4
+
+=item C<normal>
+
+-state => 'normal'
+
+Default operation -- Both text entry field and dropdown list button function normally.
+   
+=item C<readonly>
+
+-state => 'readonly'
+
+Dropdown list functions normally. When text entry field has focus, user may type in a letter, and the dropdown list immediately drops down and the first/ next matching item becomes highlighted. The user must ultimately select from the list of valid entries and may not enter anything else.
+
+=item C<text>
+
+-state => 'text'
+
+Text entry functions normally, but dropdown list button is disabled. User must type in an entry or use the up and down arrows to choose from among the list items.
+
+=item C<textonly>
+
+-state => 'textonly'
+
+Similar to "text": Text entry functions normally, but dropdown list button is disabled. User must type in an entry. The list choices are completely hidden from the user.
+
+=item C<disabled>
+
+-state => 'disabled'
+
+Widget is completely disabled and greyed out. It will not activate or take focus.
+
+=back
+
+JBrowseEntry supports all the options that BrowseEntry supports with the addition of the following options:
+
+=over 4
+
+=item C<-btntakesfocus>
+
+The dropdown list button is normally activated with the mouse and is skipped in the focusing circuit. If this option is set, then the button will take keyboard focus. Pressing <Return>, <Spacebar>, or <Downarrow> will cause the list to be dropped down, repeating causes the list to be removed again. Normally, the text entry widget receives the keyboard focus. This option can be used in combination with "-takefocus" so that either the text entry widget, the button, or both or neither receive keyboard focus. If both options are set, the entry field first receives focus, then pressing <Tab> causes the button to be focused.
+
+=item C<-farrowimage>
+
+Allows one to specify a second alternate bitmap for the image on the button which activates the dropdown list when the button has the keyboard focus. The default is to use the "-arrowimage" image. This option should only be specified if the "-arrowimage" option is also specified. See the "-arrowimage" option under Standard BrowseEntry options for more details.
+
+=item C<-height>
+
+Specify the maximum number of items to be displayed in the listbox before a vertical scrollbar is automatically added. Default is infinity (listbox will not be given a scrollbar regardless of the number of items added).
+
+=item C<-labelPack>
+
+Specify alternate packing options for the label. The default is: "[-side => 'left', -anchor => 'e']". The argument is an arrayref. Note: if no label is specified, none is packed or displayed.
+
+=item C<-listfont>
+
+Specify an alternate font for the text in the listbox. Use "-font" to change the text of the text entry field. For best results, "-font" and "-listfont" should specify fonts of similar size.
+
+=item C<-noselecttext>
+
+Normally, when the widget has the focus, the current value is "selected" (highlighted and in the cut-buffer). Some consider this unattractive in appearance, particularly with the "readonly" state, which appears as a raised button in Unix, similar to an "Optionmenu". Setting this option will cause the text to not be selected.
+
+=item C<-width>
+
+The number of characters (average if proportional font used) wide to make the entry field. The dropdown list will be set the same width as the entry widget plus the width of the button. If not specified, the default is to calculate the width to the width of the longest item in the choices list and if items are later added or removed the width will be recalculated.
+
+=back
+
+Standard BrowseEntry options alsu supported by JBrowseEntry:
+
+=over 4
+
+=item C<-listwidth>
+
+Specifies the width of the popup listbox.
+
+=item C<-variable>
+
+Specifies the variable in which the entered value is to be stored.
+
+=item C<-browsecmd>
+
+Specifies a function to call when a selection is made in the popped up listbox. It is passed the widget and the text of the entry selected. This function is called after the entry variable has been assigned the value.
+
+=item C<-listcmd>
+
+Specifies the function to call when the button next to the entry is pressed to popup the choices in the listbox. This is called before popping up the listbox, so can be used to populate the entries in the listbox.
+
+=item C<-listrelief>
+
+Specifies relief for the dropdown list (default is "sunken").
+
+=item C<-maxwidth>
+
+Specifies the maximum width the entry and listbox widgets can expand to in characters. The default is zero, meaning expand to the width to accomodate the widest string in the list.
+
+=item C<-tabcomplete>
+
+If set to "1", pressing the "<Tab>" key will cause the string in the entry field to be "auto-completed" to the next matching item in the list. If there is no match, the typed text is not changed. If it already matches a list item, then the listbox is removed from view and keyboard focus transfers to the next widget. If set to "2" and there is no match in the list, then entry is set to the default value or empty string.
+
+=item C<-arrowimage>
+
+Specifies the image to be used in the arrow button beside the entry widget. The default is an downward arrow image in the file cbxarrow.xbm
+
+=item C<-choices>
+
+Specifies the list of choices to pop up. This is a reference to an array of strings specifying the choices.
+
+=item C<-state>
+
+Specifies one of four states for the widget: "normal", "readonly", "textonly", or "disabled". If the widget is "disabled" then the value may not be changed and the arrow button won't activate. If the widget is "readonly", the entry may not be edited, but it may be changed by choosing a value from the popup listbox. "textonly" means the listbox will not activate. "normal" is the default.
+
+=item C<-colorstate>
+
+Depreciated -- Appears to force the background of the entry widget on the Unix version to "grey95" if state is normal and a "-background" color is not specified.
+
+=back
+
+Additional options tested and known to work as expected:
+
+=over 4
+
+=item C<-altbinding>
+
+Allows one to specify alternate binding schema for certain keys.
+Currently valid values are "Return=Next" (which causes pressing the 
+[Return] key to advance the focus to the next widget in the main window); 
+and "Down=Popup", which causes the [Down-arrow] key to pop up the selection 
+listbox.
+
+=back
 
 =head1 EXAMPLES
 
@@ -170,7 +306,7 @@ position the label above the widget, use "-labelPack => [-side => 'top']".
 package Tk::JBrowseEntry;
 
 use vars qw($VERSION);
-$VERSION = '4.50';
+$VERSION = '4.52';
 
 use Tk;
 use Carp;
@@ -263,6 +399,13 @@ sub Populate
 	$w->{-foreground} = $args->{-foreground}  if (defined($args->{-foreground}));
 	$w->{-background} = $w->parent->cget(-background) || 'gray';
 	$w->{-background} = $args->{-background}  if (defined($args->{-background}));
+	$w->{-textbackground} = delete($args->{-textbackground})  if (defined($args->{-textbackground}));
+	$w->{-textforeground} = delete($args->{-textforeground})  if (defined($args->{-textforeground}));
+#unless ($^O =~ /Win/i)  #FOR SOME REASON, THIS IS NEEDED IN LINUX?
+{
+	$w->{-disabledbackground} = delete($args->{-disabledbackground})  if (defined($args->{-disabledbackground}));
+	$w->{-disabledforeground} = delete($args->{-disabledforeground})  if (defined($args->{-disabledforeground}));
+}
 	$w->{-foreground} = $w->parent->cget(-foreground);
 	#$w->{-borderwidth} = 2;
 	$w->{-borderwidth} = delete($args->{-borderwidth})  if (defined($args->{-borderwidth}));
@@ -275,15 +418,18 @@ sub Populate
 	$w->{-browse} = delete($args->{-browse})  if (defined($args->{-browse}));
 	$w->{-tabcomplete} = 0;
 	$w->{-tabcomplete} = delete($args->{-tabcomplete})  if (defined($args->{-tabcomplete}));
+	$w->{-altbinding} = 0;  #NEXT 2 ADDED 20050112 TO SUPPORT ALTERNATE KEY-ACTION MODELS.
+	$w->{-altbinding} = delete($args->{-altbinding})  if (defined($args->{-altbinding}));
+#print STDERR "-altbinding=$w->{-altbinding}= w=$w=\n";
 #	unless (defined($w->{-noselecttext}))
 #	{
 #		$w->{-noselecttext} = 1  if ($args->{-state} eq 'readonly');
 #	}
+	my $lpack = delete $args->{-labelPack};   #MOVED ABOVE SUPER:POPULATE 20050120.
 	$w->SUPER::Populate($args);
 
 	# ENTRY WIDGET AND ARROW BUTTON
 
-	my $lpack = delete $args->{-labelPack};
 	unless (defined $lpack)
 	{
 		$lpack = [-side => "left", -anchor => "e"];
@@ -337,9 +483,9 @@ sub Populate
 	{
 		$sl->configure(-relief => ($w->{-listrelief}||'sunken'));
 	}
-	if (defined($w->{-background}))
+	if (defined($w->{-background}) || defined($w->{-textbackground}))
 	{
-		$e->configure(-background => $w->{-background}, -highlightbackground => $w->{-background});
+		$e->configure(-background => ($w->{-textbackground}||$w->{-background}), -highlightbackground => $w->{-background});
 		$tf->configure(-background => $w->{-background}, -highlightbackground => $w->{-background});
 		$sl->configure(-background => $w->{-background}, -highlightbackground => $w->{-background});
 		$b->configure(-background => $w->{-background}, -highlightbackground => $w->{-background});
@@ -352,6 +498,14 @@ sub Populate
 	{
 		$sl->configure( -borderwidth => 1);
 		$c->configure( -borderwidth => ($w->{-borderwidth}||0), -relief => 'ridge' );
+	}
+	if (defined($w->{-disabledforeground}))   #THIS ERRS ON LINUX SOMETIMES?!
+	{
+		eval { $e->Subwidget("entry")->configure(-disabledforeground => $w->{-disabledforeground}); };
+	}
+	if (defined($w->{-disabledbackground}))
+	{
+		eval { $e->configure(-disabledbackground => $w->{-disabledbackground}); };
 	}
 	$sl->configure(-font => $w->{-listfont})  if ($w->{-listfont});
 	$w->Advertise("choices" => $c);   #LISTBOX POPUP MAIN WINDOW PART.
@@ -441,6 +595,13 @@ sub SetBindings
 
 	local *returnFn = sub   #HANDLES RETURN-KEY PRESSED IN ENTRY AREA.
 	{
+		my $altbinding = $w->{-altbinding};
+		if ($altbinding =~ /Return\=Next/i)
+		{
+			$w->Popdown  if  ($w->{"popped"});   #UNDISPLAYS LISTBOX.
+			eval { shift->focusNext->focus; };
+			Tk->break;
+		}
 		my ($state) = $w->cget( "-state" );
 	
 		&LbFindSelection($w);
@@ -462,9 +623,29 @@ sub SetBindings
 
 	local *downFn = sub   #HANDLES DOWN-ARROW PRESSED IN ENTRY AREA.
 	{
+		my $altbinding = $w->{-altbinding};
+#print STDERR "-altbinding=$altbinding/$w->{-altbinding}= w=$w=\n";
 		my ($state) = $w->cget( "-state" );
 		return  if ($state eq 'textonly' || $state eq 'disabled');
 		&LbFindSelection($w); 
+		if ($altbinding =~ /Down\=Popup/i)  #MAKE DOWN-ARROW POP UP DD-LIST.
+		{
+			unless ($w->{"popped"})
+			{
+				$w->BtnDown;
+				return if ($state =~ /text/ || $state eq 'disabled');
+				$w->{'savefocus'} = $w->focusCurrent;
+				$w->Subwidget("slistbox")->focus;
+			}
+			else
+			{
+				$w->LbCopySelection(0,'entry.enter');
+				$e->selectionRange(0,'end')  unless ($w->{-noselecttext} || !$e->index('end'));
+				$e->icursor('end');
+				Tk->break;
+			}
+			return;
+		}
 		if ($w->{"popped"})
 		{
 			return if ($state eq 'text');
@@ -980,12 +1161,15 @@ sub PopupChoices
 		}
 
 		my $y1 = $e->rooty + $e->height + 3;
-		my $bd = $c->cget(-bd) + $c->cget(-highlightthickness);
+		#my $bd = $c->cget(-bd) + $c->cget(-highlightthickness);  #CHGD. TO NEXT 20050120.
+		my $bd = $c->cget(-bd);
 		my ($unitpixels, $ht, $x1, $ee, $width, $x2);
+#print "-os=$^O=\n";
 		if ($^O =~ /Win/i)
 		{
 			$y1 -= 3 - ($w->{-borderwidth} || 2);
-			$unitpixels = $e->height + 1;
+			#$unitpixels = $e->height + 1;  #CHGD. TO NEXT 20040827 - WINBLOWS XP SEEMS TO NOT BEVEL THE HIGHLIGHT CURSOR, 
+			$unitpixels = $e->height - 1;   #SO THE WIDTH OF EACH ITEM IS NOW 2 PIXELS SMALLER! (USE OLD LINE, IF BEVELLED)!
 			$ht = ($wheight * $unitpixels) + (2 * $bd) + 4;
 			$ee = $w->Subwidget("frame");
 			$x1 = $ee->rootx;
@@ -999,8 +1183,11 @@ sub PopupChoices
 		else
 		{
 			$y1 -= 3 - ($w->{-borderwidth} || 2);
-			$unitpixels = $e->height - 1;
+			#$unitpixels = $e->height - 1;   #CHGD. TO NEXT 2 20050120.
+			$unitpixels = $e->height - (2*$w->cget(-highlightthickness));
+			$unitpixels += 1;
 			$ht = ($wheight * $unitpixels) + (2 * $bd) + 6;
+#print "-ht=$ht= wheight=$wheight= up=$unitpixels= bd=$bd= eht=".$e->height."= ht=".$w->cget(-highlightthickness)."= \n";
 			$ee = $w->Subwidget("frame");
 			$x1 = $ee->rootx;
 			$x2 = $a->rootx + $a->width;
@@ -1175,7 +1362,9 @@ sub LbIndex
 {
 	my ($w, $flag) = @_;
 	my $sel = $w->Subwidget("slistbox")->Subwidget("listbox")->curselection 
-	|| $w->Subwidget("slistbox")->Subwidget("listbox")->index('active');
+		|| $w->Subwidget("slistbox")->Subwidget("listbox")->index('active');
+	$sel = $w->Subwidget("slistbox")->Subwidget("listbox")->index('active')
+			unless ($sel =~ /^\d+$/);   #JWT:  ADDED 20040819 'CAUSE CURSELECTION SEEMS TO RETURN "ARRAY(XXXX)" NOW?!?!?!
 	if (defined $sel)
 	{
 		return int($sel);
@@ -1454,7 +1643,10 @@ sub _set_edit_state
 		$frame->configure(-relief => ($w->{-relief} || 'sunken'), 
 				-takefocus => (1 & $w->{takefocus}), 
 				-highlightcolor => $framehlcolor);
-	}       
+	}
+#print "-???- tfg=$w->{-textforeground}=\n";
+	$entry->configure( -background => $w->{-textbackground})  if ($w->{-textbackground});
+	$entry->configure( -foreground => $w->{-textforeground})  if ($w->{-textforeground});
 	unless ($w->Subwidget("slistbox")->size > 0)
 	{
 		$button->configure( -state => "disabled", -takefocus => 0);

@@ -6,3 +6,5 @@ JBrowseTest.pl
 test.pl
 Tk::JBrowseEntry.3
 Tk/JBrowseEntry.pm
+JBrowseEntry.htm
+META.yml                                 Module meta-data (added by MakeMaker)
