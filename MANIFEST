@@ -1,0 +1,8 @@
+Changes
+MANIFEST
+README
+Makefile.PL
+JBrowseTest.pl
+test.pl
+Tk::JBrowseEntry.3
+Tk/JBrowseEntry.pm
