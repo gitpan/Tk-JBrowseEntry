@@ -54,3 +54,9 @@ Revision history for "ptkftp".
 	- Fixed "-labelPack" option to work, if packed above or below main widget.
 	- Fixed small glitch in listbox vertical sizing.
 
+4.61  Mon Feb 14, 2005
+	- Added hash-reference as an option for the choices so that it can work like 
+	  selects in HTML where one set of values is displyed to the user (the 
+	  hash values and the other (the keys) is actually returned.  Also added 
+	  the functions:  dereference, dereferenceOnly, hasreference, and fetchhash 
+	  to work with these.

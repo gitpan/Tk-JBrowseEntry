@@ -4,7 +4,7 @@
 =head1 NAME
 
 JBrowseEntry is a full-featured "Combo-box" (Text-entry combined with drop-down 
-listbox).
+listbox.
 
 =head1 DESCRIPTION
 
@@ -45,142 +45,6 @@ One can optionally specify a label (-label), similar to the "LabEntry" widget.
 By default, the label appears packed to the left of the widget.  The 
 positioning can be specified via the "-labelPack" option.  For example, to 
 position the label above the widget, use "-labelPack => [-side => 'top']".
-
-=head1 OPTIONS
-
-JBrowseEntry supports 5 different states:
-
-=over 4
-
-=item C<normal>
-
--state => 'normal'
-
-Default operation -- Both text entry field and dropdown list button function normally.
-   
-=item C<readonly>
-
--state => 'readonly'
-
-Dropdown list functions normally. When text entry field has focus, user may type in a letter, and the dropdown list immediately drops down and the first/ next matching item becomes highlighted. The user must ultimately select from the list of valid entries and may not enter anything else.
-
-=item C<text>
-
--state => 'text'
-
-Text entry functions normally, but dropdown list button is disabled. User must type in an entry or use the up and down arrows to choose from among the list items.
-
-=item C<textonly>
-
--state => 'textonly'
-
-Similar to "text": Text entry functions normally, but dropdown list button is disabled. User must type in an entry. The list choices are completely hidden from the user.
-
-=item C<disabled>
-
--state => 'disabled'
-
-Widget is completely disabled and greyed out. It will not activate or take focus.
-
-=back
-
-JBrowseEntry supports all the options that BrowseEntry supports with the addition of the following options:
-
-=over 4
-
-=item C<-btntakesfocus>
-
-The dropdown list button is normally activated with the mouse and is skipped in the focusing circuit. If this option is set, then the button will take keyboard focus. Pressing <Return>, <Spacebar>, or <Downarrow> will cause the list to be dropped down, repeating causes the list to be removed again. Normally, the text entry widget receives the keyboard focus. This option can be used in combination with "-takefocus" so that either the text entry widget, the button, or both or neither receive keyboard focus. If both options are set, the entry field first receives focus, then pressing <Tab> causes the button to be focused.
-
-=item C<-farrowimage>
-
-Allows one to specify a second alternate bitmap for the image on the button which activates the dropdown list when the button has the keyboard focus. The default is to use the "-arrowimage" image. This option should only be specified if the "-arrowimage" option is also specified. See the "-arrowimage" option under Standard BrowseEntry options for more details.
-
-=item C<-height>
-
-Specify the maximum number of items to be displayed in the listbox before a vertical scrollbar is automatically added. Default is infinity (listbox will not be given a scrollbar regardless of the number of items added).
-
-=item C<-labelPack>
-
-Specify alternate packing options for the label. The default is: "[-side => 'left', -anchor => 'e']". The argument is an arrayref. Note: if no label is specified, none is packed or displayed.
-
-=item C<-listfont>
-
-Specify an alternate font for the text in the listbox. Use "-font" to change the text of the text entry field. For best results, "-font" and "-listfont" should specify fonts of similar size.
-
-=item C<-noselecttext>
-
-Normally, when the widget has the focus, the current value is "selected" (highlighted and in the cut-buffer). Some consider this unattractive in appearance, particularly with the "readonly" state, which appears as a raised button in Unix, similar to an "Optionmenu". Setting this option will cause the text to not be selected.
-
-=item C<-width>
-
-The number of characters (average if proportional font used) wide to make the entry field. The dropdown list will be set the same width as the entry widget plus the width of the button. If not specified, the default is to calculate the width to the width of the longest item in the choices list and if items are later added or removed the width will be recalculated.
-
-=back
-
-Standard BrowseEntry options alsu supported by JBrowseEntry:
-
-=over 4
-
-=item C<-listwidth>
-
-Specifies the width of the popup listbox.
-
-=item C<-variable>
-
-Specifies the variable in which the entered value is to be stored.
-
-=item C<-browsecmd>
-
-Specifies a function to call when a selection is made in the popped up listbox. It is passed the widget and the text of the entry selected. This function is called after the entry variable has been assigned the value.
-
-=item C<-listcmd>
-
-Specifies the function to call when the button next to the entry is pressed to popup the choices in the listbox. This is called before popping up the listbox, so can be used to populate the entries in the listbox.
-
-=item C<-listrelief>
-
-Specifies relief for the dropdown list (default is "sunken").
-
-=item C<-maxwidth>
-
-Specifies the maximum width the entry and listbox widgets can expand to in characters. The default is zero, meaning expand to the width to accomodate the widest string in the list.
-
-=item C<-tabcomplete>
-
-If set to "1", pressing the "<Tab>" key will cause the string in the entry field to be "auto-completed" to the next matching item in the list. If there is no match, the typed text is not changed. If it already matches a list item, then the listbox is removed from view and keyboard focus transfers to the next widget. If set to "2" and there is no match in the list, then entry is set to the default value or empty string.
-
-=item C<-arrowimage>
-
-Specifies the image to be used in the arrow button beside the entry widget. The default is an downward arrow image in the file cbxarrow.xbm
-
-=item C<-choices>
-
-Specifies the list of choices to pop up. This is a reference to an array of strings specifying the choices.
-
-=item C<-state>
-
-Specifies one of four states for the widget: "normal", "readonly", "textonly", or "disabled". If the widget is "disabled" then the value may not be changed and the arrow button won't activate. If the widget is "readonly", the entry may not be edited, but it may be changed by choosing a value from the popup listbox. "textonly" means the listbox will not activate. "normal" is the default.
-
-=item C<-colorstate>
-
-Depreciated -- Appears to force the background of the entry widget on the Unix version to "grey95" if state is normal and a "-background" color is not specified.
-
-=back
-
-Additional options tested and known to work as expected:
-
-=over 4
-
-=item C<-altbinding>
-
-Allows one to specify alternate binding schema for certain keys.
-Currently valid values are "Return=Next" (which causes pressing the 
-[Return] key to advance the focus to the next widget in the main window); 
-and "Down=Popup", which causes the [Down-arrow] key to pop up the selection 
-listbox.
-
-=back
 
 =head1 EXAMPLES
 
@@ -306,7 +170,7 @@ listbox.
 package Tk::JBrowseEntry;
 
 use vars qw($VERSION);
-$VERSION = '4.52';
+$VERSION = '4.61';
 
 use Tk;
 use Carp;
@@ -415,6 +279,7 @@ sub Populate
 	$w->{-listrelief} = delete($args->{-listrelief})  if (defined($args->{-listrelief}));
 	$w->{-listfont} = delete($args->{-listfont})  if (defined($args->{-listfont}));
 	$w->{-noselecttext} = delete($args->{-noselecttext})  if (defined($args->{-noselecttext}));
+	$w->{-browse} = 0;
 	$w->{-browse} = delete($args->{-browse})  if (defined($args->{-browse}));
 	$w->{-tabcomplete} = 0;
 	$w->{-tabcomplete} = delete($args->{-tabcomplete})  if (defined($args->{-tabcomplete}));
@@ -441,6 +306,7 @@ sub Populate
 			-relief => ($w->{-relief} || 'sunken'));
 	my $e = $tf->LabEntry(-borderwidth => 0, -relief => 'flat');
 	# FOR SOME REASON, E HAS TO BE A LABENTRY, JUST PLAIN ENTRY WOULDN'T TAKE KEYBOARD EVENTS????
+ $w->ConfigSpecs(DEFAULT => [$e]);
 	my $b = $tf->Button(-borderwidth => 1, -takefocus => $w->{btntakesfocus}, 
 			#-bitmap => '@' . Tk->findINC("balArrow.xbm"));
 			-bitmap => $BITMAP);
@@ -599,6 +465,8 @@ sub SetBindings
 		if ($altbinding =~ /Return\=Next/i)
 		{
 			$w->Popdown  if  ($w->{"popped"});   #UNDISPLAYS LISTBOX.
+			$w->Callback(-browsecmd => $w, $w->Subwidget('entry')->get, 'entry.return')
+					if ($w->{-browse} == 1);
 			eval { shift->focusNext->focus; };
 			Tk->break;
 		}
@@ -966,6 +834,7 @@ sub SetBindings
 	{
 		$w->ButtonHack;
 		LbChoose($w, $l->XEvent->x, $l->XEvent->y);
+		Tk->break;     #ADDED 20050210.
 	}
 	);
 	$l->bind('<Escape>' => sub
@@ -1442,10 +1311,10 @@ sub choices
 	else           #POPULATE DROPDOWN LIST WITH THESE CHOICES.
 	{
 		my $choices = shift;
-		if( $choices )
+		if ($choices)
 		{
 			$w->delete( qw/0 end/ );
-#			$w->Subwidget("slistbox")->insert( "end", @$choices );
+			$w->{hashref} = {}  if (defined $w->{hashref});   #ADDED 20050125.
 			$w->insert($choices);
 		}
 
@@ -1488,7 +1357,24 @@ sub insert
 	my $res;
 	if (ref($item))
 	{
-		$res = $w->Subwidget("slistbox")->insert($pos, @$item);
+		if (ref($item)  eq 'HASH')
+		{
+			my @choiceKeys = ();
+			@choiceKeys = sort { $item->{$a} cmp $item->{$b} } keys(%$item);
+			my @choiceVals = sort values(%$item);
+			$w->Subwidget('slistbox')->insert($pos, @choiceVals);
+			my $choiceReverseHashRef = (defined $w->{hashref}) ? $w->{hashref}
+					: {};    #ADDED 20050125.
+			for (my $i=0;$i<=$#choiceKeys;$i++)   #ADDED 20050125.
+			{
+				$choiceReverseHashRef->{$choiceVals[$i]} = $choiceKeys[$i];
+			}
+			$w->{hashref} = $choiceReverseHashRef;
+		}
+		else
+		{
+			$res = $w->Subwidget("slistbox")->insert($pos, @$item);
+		}
 	}
 	else
 	{
@@ -1518,6 +1404,13 @@ sub delete
 {
 	my $w = shift;
 	my $res = $w->Subwidget("slistbox")->delete(@_);
+	if (defined $w->{hashref})   #ADDED 20050125.
+	{
+		foreach my $i (@_)
+		{
+			delete $w->{hashref}->{$i}  if (defined $w->{hashref}->{$i});
+		}
+	}
 	unless ($w->Subwidget("slistbox")->size > 0)
 	{
 		my $button = $w->Subwidget( "arrow" );
@@ -1676,6 +1569,39 @@ sub _max
 		$max = $val if $max < $val;
 	}
 	return( $max );
+}
+
+sub dereference   #USER-CALLABLE FUNCTION, ADDED 20050125.
+{
+	my $w = shift;
+	return undef  unless (defined $_[0]);
+	my $userValue = shift;
+	return (defined($w->{hashref}) && defined($w->{hashref}->{$userValue}))
+			? $w->{hashref}->{$userValue} : $userValue;
+}
+
+sub dereferenceOnly   #USER-CALLABLE FUNCTION, ADDED 20050125.
+{
+	my $w = shift;
+	return undef  unless (defined $_[0]);
+	my $userValue = shift;
+	return (defined($w->{hashref}) && defined($w->{hashref}->{$userValue}))
+			? $w->{hashref}->{$userValue} : undef;
+}
+
+sub hasreference   #USER-CALLABLE FUNCTION, ADDED 20050125.
+{
+	my $w = shift;
+	return undef  unless (defined $_[0]);
+	my $userValue = shift;
+	return (defined($w->{hashref}) && defined($w->{hashref}->{$userValue}))
+			? 1 : undef;
+}
+
+sub fetchhash
+{
+	my $w = shift;
+	return (defined $w->{hashref}) ? $w->{hashref} : undef;
 }
 
 1;
