@@ -211,6 +211,10 @@ JBrowseEntry supports all the options that BrowseEntry supports with the additio
 .el .IP "\f(CW\-btntakesfocus\fR" 4
 .IX Item "-btntakesfocus"
 The dropdown list button is normally activated with the mouse and is skipped in the focusing circuit. If this option is set, then the button will take keyboard focus. Pressing <Return>, <Spacebar>, or <Downarrow> will cause the list to be dropped down, repeating causes the list to be removed again. Normally, the text entry widget receives the keyboard focus. This option can be used in combination with \*(L"\-takefocus\*(R" so that either the text entry widget, the button, or both or neither receive keyboard focus. If both options are set, the entry field first receives focus, then pressing <Tab> causes the button to be focused.
+.ie n .IP """\-deleteitemsok""" 4
+.el .IP "\f(CW\-deleteitemsok\fR" 4
+.IX Item "-deleteitemsok"
+If set, allows user to delete individual items in the drop-down list by pressing the &lt;Delete&gt; key to delete the current (active) item.
 .ie n .IP """\-farrowimage""" 4
 .el .IP "\f(CW\-farrowimage\fR" 4
 .IX Item "-farrowimage"
