@@ -60,3 +60,8 @@ Revision history for "ptkftp".
 	  hash values and the other (the keys) is actually returned.  Also added 
 	  the functions:  dereference, dereferenceOnly, hasreference, and fetchhash 
 	  to work with these.
+4.63  Apr 29, 2006
+	- Added option (-deleteitemsok) so that user can delete items from 
+	  history list.
+4.64  Sun Jul 30, 2006
+	- Minor tweeks for JFileDialog.
