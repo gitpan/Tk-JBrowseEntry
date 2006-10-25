@@ -65,3 +65,12 @@ Revision history for "ptkftp".
 	  history list.
 4.64  Sun Jul 30, 2006
 	- Minor tweeks for JFileDialog.
+4.65  Tue Oct 25, 2006
+	- Add right-arrow completion so that if one types the first (few) letter(s) 
+	  of one of the choices in the list, then presses the right-arrow (with 
+	  the cursor at the end of the typed string, the text will be completed 
+	  with the first matching choice in the list (similar to up and 
+	  down-arrow, but repeated pressing only toggles between any 
+	  matching choices in the list, whereas down-arrow, continues to 
+	  switch between all the choices in the list.  To revert to pre-4.65 
+	  behavior, specify -altbinding => 'Right=NoSearch'.
