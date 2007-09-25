@@ -69,6 +69,10 @@ $jb6 = $MainWin->JBrowseEntry(
 	-browsecmd => sub {print "-browsecmd!\n";},
 	-listcmd => sub {print "-listcmd!\n";},
 	-state => 'normal',
+#-borderwidth => 12,
+#-framehighlightthickness => 6,
+#-entryborderwidth => 8,
+#-labelPack => [qw/-side top/],
 	-choices => [qw(pigs cows foxes goats horses sheep dogs cats ardvarks default)]);
 $jb6->pack(
 	-side   => 'top', -pady => '10', -anchor => 'w');

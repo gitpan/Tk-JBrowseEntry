@@ -4,7 +4,6 @@ README
 Makefile.PL
 JBrowseTest.pl
 test.pl
-JBrowseEntry.3
-Tk/JBrowseEntry.pm
+lib/Tk/JBrowseEntry.pm
 JBrowseEntry.htm
 META.yml                                 Module meta-data (added by MakeMaker)

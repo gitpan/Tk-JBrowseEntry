@@ -3,8 +3,28 @@
 
 =head1 NAME
 
-JBrowseEntry is a full-featured "Combo-box" (Text-entry combined with drop-down 
-listbox.
+Tk::JBrowseEntry - Full-featured "Combo-box" (Text-entry combined with drop-down listbox.
+
+=head1 SYNOPSIS
+
+	use Tk;
+	use Tk::JBrowseEntry;
+
+	my $mw = MainWindow->new;
+	my $var;
+
+	my $widget = $mw->JBrowseEntry(
+		-label => 'Normal:',
+		-variable => \$var,
+		-state => 'normal',
+		-choices => [qw(pigs cows foxes goats)],
+		-width  => 12
+	)->pack(
+		-side   => 'top',
+		-pady => '10',
+		-anchor => 'w');
+
+	MainLoop;
 
 =head1 DESCRIPTION
 
@@ -170,7 +190,7 @@ position the label above the widget, use "-labelPack => [-side => 'top']".
 package Tk::JBrowseEntry;
 
 use vars qw($VERSION);
-$VERSION = '4.65';
+$VERSION = '4.70';
 
 use Tk;
 use Carp;
@@ -272,7 +292,8 @@ sub Populate
 }
 	$w->{-foreground} = $w->parent->cget(-foreground);
 	#$w->{-borderwidth} = 2;
-	$w->{-borderwidth} = delete($args->{-borderwidth})  if (defined($args->{-borderwidth}));
+#	$w->{-borderwidth} = delete($args->{-borderwidth})  if (defined($args->{-borderwidth}));  #CHGD. TO NEXT 20070904 FROM WOLFRAM HUMANN.
+	$w->{-borderwidth} = defined($args->{-borderwidth}) ? delete($args->{-borderwidth}) : 2; 
 	$w->{-relief} = 'sunken';
 	$w->{-relief} = delete($args->{-relief})  if (defined($args->{-relief}));
 	$w->{-listrelief} = 'sunken';
@@ -287,11 +308,13 @@ sub Populate
 	$w->{-altbinding} = delete($args->{-altbinding})  if (defined($args->{-altbinding}));
 	#NEXT LINE ADDED 20060429 TO SUPPORT OPTION FOR USER DELETION OF LISTBOX ITEMS.
 	$w->{-deleteitemsok} = delete($args->{-deleteitemsok})  if (defined($args->{-deleteitemsok}));
-#print STDERR "-altbinding=$w->{-altbinding}= w=$w=\n";
-#	unless (defined($w->{-noselecttext}))
-#	{
-#		$w->{-noselecttext} = 1  if ($args->{-state} eq 'readonly');
-#	}
+	$w->{-framehighlightthickness} = defined($args->{-framehighlightthickness})
+		? delete($args->{-framehighlightthickness}) : 1;
+	#NEXT 2 OPTIONS ADDED 20070904 BY JWT:
+	$w->{-buttonborderwidth} = defined($args->{-buttonborderwidth})
+		? delete($args->{-buttonborderwidth}) : 1;
+	$w->{-entryborderwidth} = defined($args->{-entryborderwidth})
+		? delete($args->{-entryborderwidth}) : 0;
 	my $lpack = delete $args->{-labelPack};   #MOVED ABOVE SUPER:POPULATE 20050120.
 	$w->SUPER::Populate($args);
 
@@ -304,16 +327,18 @@ sub Populate
 	my $labelvalue = $args->{-label};
 
 	my $ll = $w->Label(-text => delete $args->{-label});
-	my $tf = $w->Frame(-borderwidth => ($w->{-borderwidth} || 2), -highlightthickness => 1, 
-			-relief => ($w->{-relief} || 'sunken'));
-	my $e = $tf->LabEntry(-borderwidth => 0, -relief => 'flat');
+#	my $tf = $w->Frame(-borderwidth => ($w->{-borderwidth} || 2), -highlightthickness => 1, 
+#			-relief => ($w->{-relief} || 'sunken'));     #CHGD. TO NEXT 2 20070904 FROM WOLFRAM HUMANN.
+	my $tf = $w->Frame(-borderwidth => $w->{-borderwidth}, -highlightthickness => $w->{-framehighlightthickness}, 
+			-relief => $w->{-relief});
+
+#	my $e = $tf->LabEntry(-borderwidth => 0, -relief => 'flat');
+	my $e = $tf->LabEntry(-borderwidth => $w->{-entryborderwidth}, -relief => 'flat');
 	# FOR SOME REASON, E HAS TO BE A LABENTRY, JUST PLAIN ENTRY WOULDN'T TAKE KEYBOARD EVENTS????
  $w->ConfigSpecs(DEFAULT => [$e]);
-	my $b = $tf->Button(-borderwidth => 1, -takefocus => $w->{btntakesfocus}, 
-			#-bitmap => '@' . Tk->findINC("balArrow.xbm"));
+#	my $b = $tf->Button(-borderwidth => 1, -takefocus => $w->{btntakesfocus},   #CHGD. TO NEXT 20070904 - JWT:
+	my $b = $tf->Button(-borderwidth => $w->{-buttonborderwidth}, -takefocus => $w->{btntakesfocus}, 
 			-bitmap => $BITMAP);
-			#-bitmap => '@' . Tk->findINC("cbxarrow.xbm"));
-	#$ll->packForget()  unless ($labelvalue);
 	if ($labelvalue)
 	{
 		$ll->pack(@$lpack);
@@ -558,6 +583,7 @@ sub SetBindings
 			}
 			my $var_ref = $w->cget( "-textvariable" );
 			$$var_ref = $listsels[$index];
+			$l->activate($index);      #ADDED 20070904 PER PATCH FROM WOLFRAM HUMANN.
 			$e->icursor('end');
 			$e->selectionRange(0,'end')  unless ($w->{-noselecttext} || !$e->index('end'));
 		}
@@ -583,6 +609,7 @@ sub SetBindings
 			$index = $#listsels  if ($index < 0);
 			my $var_ref = $w->cget( "-textvariable" );
 			$$var_ref = $listsels[$index];
+			$l->activate($index);      #ADDED 20070904 PER PATCH FROM WOLFRAM HUMANN.
 			$e->icursor('end');
 			$e->selectionRange(0,'end')  unless ($w->{-noselecttext} || !$e->index('end'));
 		}
@@ -792,6 +819,16 @@ sub SetBindings
 	$f->bind("<Left>", sub {Tk->break;});
 	#$f->bind("<Right>", sub {Tk->break;});
 	$f->bind("<Right>", \&rightFn);
+
+	$e->bind("<<LeftTab>>", sub      #ADDED 20070904 PER PATCH FROM WOLFRAM HUMANN.
+	{
+		my ($state) = $w->cget( "-state" );
+		$w->Popdown  if  ($w->{"popped"});
+		$w->focusPrev  if ($state =~ /only/o);
+		$w->focusCurrent->focusPrev;
+		$w->focusCurrent->focusPrev  unless ($state =~ /only/o);
+		Tk->break;
+	});
 
 	$e->bind("<Tab>", sub
 	{
@@ -1023,7 +1060,7 @@ sub PopupChoices
 {
 	my ($w) = @_;
 
-	my $first;
+#	my $first;   -- REMOVED 20070904 PER PATCH BY WOLFRAM HUMANN (PROBABLY OBSOLETED BY FRANK HERRMANN PATCHES
 
 	if (!$w->{"popped"})
 	{
@@ -1046,7 +1083,7 @@ sub PopupChoices
 
 		my $sll = $s->Subwidget("listbox");
 		my $rw = $c->width; 
-		$first = 1  if ($rw <= 1);
+#		$first = 1  if ($rw <= 1);   -- REMOVED 20070904 PER PATCH BY WOLFRAM HUMANN
 		my ($itemcnt) = $sll->index('end');
 		$wheight = 10  unless ($wheight);
 		$wheight = $itemcnt  if ($itemcnt < $wheight);
@@ -1099,12 +1136,14 @@ sub PopupChoices
 #			}
 #			$width = $rw;   #REMOVED 20020815 - UNNECESSARY!
 $rw = $width;    #ADDED 20020815 TO CAUSE LISTBOX TO ADJUST WIDTH TO SAME AS VARYING ENTRY FIELD!
-			if ($first)
+#			if ($first)   -- REMOVED 20070904 PER PATCH BY WOLFRAM HUMANN
 			{
 				#NEXT LINE ADDED 20030531 PER PATCH BY FRANK HERRMANN.
 				$w->{-borderwidth} = 0 unless(defined $w->{-borderwidth});	# XXX
-				$rw += 1 + int($w->{-borderwidth} / 2);
-				$first = 0;
+#				$rw += 1 + int($w->{-borderwidth} / 2);  -- CHGD. TO NEXT 20070904 - SEEMS TO WORK BETTER!
+				$rw += $w->{-borderwidth};
+#				$first = 0;   -- REMOVED 20070904 PER PATCH BY WOLFRAM HUMANN
+				#THANKS, WOLFRAM!
 			}
 
 			# IF LISTBOX IS TOO FAR RIGHT, PULL IT BACK TO THE LEFT
@@ -1218,7 +1257,7 @@ sub LbFindSelection
 	my $l = $w->Subwidget("slistbox")->Subwidget("listbox");
 	$l->configure(-selectmode => 'browse');
 	my (@listsels) = $l->get('0','end');
-	unless ($lettersearch)
+	unless ($lettersearch || !defined($srchval))
 	{
 		foreach my $i (0..$#listsels)   #SEARCH FOR TRUE EQUALITY.
 		{

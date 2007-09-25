@@ -74,3 +74,14 @@ Revision history for "ptkftp".
 	  matching choices in the list, whereas down-arrow, continues to 
 	  switch between all the choices in the list.  To revert to pre-4.65 
 	  behavior, specify -altbinding => 'Right=NoSearch'.
+4.70  Mon Sep 24, 2006
+	- Added new options:  -framehighlightthickness (default 1), 
+	  -buttonborderwidth (default 1), and --entryborderwidth (default 0).
+	- Changed initialization of -borderwidth and -buttonborderwidth to fix 
+	  inconsistancies pointed out by Wolfram Humann.
+	- Fixed activation issue on up and down arrow presses and with "back-
+	  tab with patch from Wolfram Humann.  Thanks for the patches!
+	- Fixed other minor issues.
+	- Fixed makefile using new version by Alexandr Ciornii that, among 
+	  other things, fixes the bug that caused the manpage file to have 
+	  an extra TK:: prefix appended to it.
