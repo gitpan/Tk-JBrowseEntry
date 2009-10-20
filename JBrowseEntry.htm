@@ -247,6 +247,20 @@ Default 1:  Specifies the thickness of the border around the button that activat
 Default 0:  Specifies the thickness of the border around the text entry widget.
 </dd>
 <p></p>
+<dt><strong><a name="item__2dnobutton"><code>-nobutton</code></a></strong><br />
+</dt>
+<dd>
+Default 0:  Prevents dropdown list button from being displayed.
+</dd>
+<p></p>
+<dt><strong><a name="item__2dlabelrelief"><code>-labelrelief</code></a></strong><br />
+</dt>
+<dd>
+Default &quot;flat&quot;:  Allow relief of the label portion of the widget to be specified.
+</dd>
+<p></p></dl>
+<p>Additional options tested and known to work as expected:</p>
+<dl>
 <dt><strong><a name="item__2dcolorstate"><code>-colorstate</code></a></strong><br />
 </dt>
 <dd>
@@ -259,10 +273,22 @@ Depreciated -- Appears to force the background of the entry widget on the Unix v
 </dt>
 <dd>
 Allows one to specify alternate binding schema for certain keys.
-Currently valid values are ``Return=Next'' (which causes pressing the 
-[Return] key to advance the focus to the next widget in the main window); 
-and ``Down=Popup'', which causes the [Down-arrow] key to pop up the selection 
+Currently valid values are:
+
+&quot;Return=Next&quot; - causes pressing the 
+[Return] key to advance the focus to the next widget in the main window; 
+
+&quot;Return=Go&quot; - causes the &quot;-browsecmd&quot; callback to be executed 
+when the [Return] key is pressed when the entry widget has the keyboard focus instead 
+of just bringing up the dropdown list and activating the closest item.
+
+&quot;Down=Popup&quot; - causes the [Down-arrow] key to pop up the selection 
 listbox.
+
+&quot;NoListbox=actionlist&quot; - causes the &quot;-browsecmd&quot; callback 
+	  to NOT be invoked for specified altbindings, ie. 
+	  &quot;NoListbox=listbox.space&quot; causes the callback to not be executed if 
+	  the <spacebar> is pressed while the listbox has keyboard focus.
 </dd>
 <p></p></dl>
 <p>

@@ -85,3 +85,37 @@ Revision history for "ptkftp".
 	- Fixed makefile using new version by Alexandr Ciornii that, among 
 	  other things, fixes the bug that caused the manpage file to have 
 	  an extra TK:: prefix appended to it.
+4.71	- Added "-listcmd" callback.
+	- Added "-nobutton" option to prevent dropdown list button from being 
+	  displayed (default 0 (false)).
+	- Added "-labelrelief" option (default "flat").
+	- Added invocation of the "-browsecmd" callback if <Return> is 
+	  pressed in the text field and -altbinding includes "Return=Go".
+	- Added a "NoListbox" altbinding to cause the "-browsecmd" callback 
+	  to NOT be invoked for specified altbindings, ie. 
+	  "NoListbox=listbox.space" causes the callback to not be executed if 
+	  the <spacebar> is pressed while the listbox has keyboard focus.
+4.72	- Added new user-callable function get().  get() with no arguments 
+	  returns the current value of the "-textvariable" variable.  If any 
+	  arguments are passed, they are passed directly to the listbox->get() 
+	  function, ie. "0", "end" to return all values of the listbox.
+	- Added new user-callable function activate().  activate() invokes 
+	  the activate() option on the listbox to make the item with the 
+	  index specified by the first argument "active".  Unless a second 
+	  argument is passed containing a false value, the value of the 
+	  "-textvariable" variable is also set to this now active value.
+	- Added new user-callable function index(), which invokes and returns 
+	  the result of the listbox index() function.
+	- Added new user-callable function size(), which invokes and returns 
+	  the result of the listbox size() function (the number of items in 
+	  the list.
+	- Fixed possible bug with the return results from the choices() 
+	  function when called without any arguments.
+4.73	- Fixed so that whenever the mouse is clicked or the spacebar pressed 
+	  within the text area and the text area is readonly and either empty 
+	  or does not contain text that matches any of the items in the 
+	  dropdown list, then the 1st item is activated and highlighted 
+	  instead of the last one.
+4.74	- Fixed so that whenever the "-textvariable" variable is undefined, 
+	  then the dropdown list is shown, the 1st item will be activated 
+	  and highlighted instead of the last one.

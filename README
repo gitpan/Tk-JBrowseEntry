@@ -1,12 +1,20 @@
 NAME
-    JBrowseEntry is a full-featured "Combo-box" (Text-entry combined with
-    drop-down listbox.  
 
-	Copyright (c) 2001, 2002, 2003, 2004, 2005 by Jim Turner, 
+    Tk::JBrowseEntry is an enhanced version of the Tk::BrowseEntry widget.
+
+	Copyright (c) 2001 - 2009 by Jim Turner, 
 	All rights reservered.  
 	JBrowseEntry  is licenced under the same licence as Perl itself.
 
 DESCRIPTION
+
+    Tk::JBrowseEntry is a derived widget from Tk::BrowseEntry, but adds 
+    numerous features and options.  Among them are hash lists (one set 
+    of values is displayed for the user, but another is used as data), 
+    ability to disable either the text entry widget or the listbox, 
+    ability to allow user to delete items from the list, additional 
+    keyboard bindings, and much more.
+
     JBrowseEntry widgets allow one to specify a full combo-box, a "readonly"
     box (text field allows user to type the 1st letter of an item to search
     for, but user may only ultimately select one of the items in the list),
@@ -48,13 +56,12 @@ For more docs & examples, simply do:
 
 	pod2text Tk/JBrowseEntry.pm 
 
-To install, copy Tk/JBrowseEntry.pm to your Tk subdirectory within Perl's path.  To 
-determine Perl's path, do:
+To install, do the usual:
 
-	perl -V
-
-and look at the bottom.
-
+	perl Makefile.PL
+	make
+	make test
+	sudo make install
 
 Enjoy!
 
