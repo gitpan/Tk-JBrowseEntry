@@ -119,3 +119,5 @@ Revision history for "ptkftp".
 4.74	- Fixed so that whenever the "-textvariable" variable is undefined, 
 	  then the dropdown list is shown, the 1st item will be activated 
 	  and highlighted instead of the last one.
+4.75	- Remove accidental reference to DBI in test file (fix broken test)
+	  This closes rt.cpan.org bug#50767.

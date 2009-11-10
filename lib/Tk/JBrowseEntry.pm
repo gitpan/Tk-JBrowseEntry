@@ -402,7 +402,7 @@ Get or set the state of the widget.
 package Tk::JBrowseEntry;
 
 use vars qw($VERSION);
-$VERSION = '4.74';
+$VERSION = '4.75';
 
 use Tk;
 use Carp;

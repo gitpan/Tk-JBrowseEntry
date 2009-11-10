@@ -1,8 +1,5 @@
 use lib '.';
 
-#BEGIN { $ENV{DBI_PUREPERL} = 2 };
-require DBI;
-
 $^W = 1;
 
 # Before `make install' is performed this script should be runnable with
