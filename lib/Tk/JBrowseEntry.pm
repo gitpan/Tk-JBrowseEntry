@@ -1,9 +1,10 @@
 #
-# JBrowseEntry is a stripped down version of ComboBox.tcl from Tix4.0
+# Tk::JBrowseEntry is an enhanced version of the Tk::BrowseEntry widget.
 
 =head1 NAME
 
-Tk::JBrowseEntry - Full-featured "Combo-box" (Text-entry combined with drop-down listbox.
+Tk::JBrowseEntry - Full-featured "Combo-box" (Text-entry combined with drop-down listbox) 
+derived from Tk::BrowseEntry with many additional features and options.
 
 =head1 SYNOPSIS
 
@@ -27,6 +28,12 @@ Tk::JBrowseEntry - Full-featured "Combo-box" (Text-entry combined with drop-down
 	MainLoop;
 
 =head1 DESCRIPTION
+
+Tk::JBrowseEntry is a derived widget from Tk::BrowseEntry, but adds numerous 
+features and options.  Among them are hash lists (one set of values is displayed 
+for the user, but another is used as data), ability to disable either the text 
+entry widget or the listbox, ability to allow user to delete items from the list, 
+additional keyboard bindings, and much more.
 
 JBrowseEntry widgets allow one to specify a full combo-box, a "readonly" 
 box (text field allows user to type the 1st letter of an item to search for, 
@@ -185,15 +192,11 @@ position the label above the widget, use "-labelPack => [-side => 'top']".
  
  MainLoop;
 
-=head1 AUTHOR
-
-Jim Turner
-
 =head1 SEE ALSO
 
-L<Tk::BrowseEntry> L<Tk::Listbox> L<Tk::Entry>
+L<Tk::JComboBox> L<Tk::BrowseEntry> L<Tk::Listbox> L<Tk::Entry>
 
-=head1 WIDGIT-SPECIFIC OPTIONS
+=head1 WIDGET-SPECIFIC OPTIONS
 
 =over 4
 
@@ -217,6 +220,10 @@ I<disabled>:  Widget is completely disabled and greyed out. It will not activate
 
 =back
 
+=item B<-altbinding>
+
+Allows one to specify alternate binding schema for certain keys. Currently valid values are "Return=Next" (which causes pressing the [Return] key to advance the focus to the next widget in the main window); and "Down=Popup", which causes the [Down-arrow] key to pop up the selection listbox. 
+
 =item B<-btntakesfocus>
 
 The dropdown list button is normally activated with the mouse and is skipped in the focusing circuit. If this option is set, then the button will take keyboard focus. Pressing <Return>, <Spacebar>, or <Downarrow> will cause the list to be dropped down, repeating causes the list to be removed again. Normally, the text entry widget receives the keyboard focus. This option can be used in combination with "-takefocus" so that either the text entry widget, the button, or both or neither receive keyboard focus. If both options are set, the entry field first receives focus, then pressing <Tab> causes the button to be focused. 
@@ -237,6 +244,12 @@ Specify the maximum number of items to be displayed in the listbox before a vert
 
 Specify alternate packing options for the label. The default is: "[-side => 'left', -anchor => 'e']". The argument is an arrayref. Note: if no label is specified, none is packed or displayed. 
 
+=item B<-labelrelief>
+
+Default B<"flat">
+
+Allow relief of the label portion of the widget to be specified.
+
 =item B<-listfont>
 
 Specify an alternate font for the text in the listbox. Use "-font" to change the text of the text entry field. For best results, "-font" and "-listfont" should specify fonts of similar size. 
@@ -255,33 +268,27 @@ Default B<0>
 
 Prevents dropdown list button from being displayed.
 
-=item B<-labelrelief>
-
-Default B<"flat">
-
-Allow relief of the label portion of the widget to be specified.
-
-=item B<-altbinding>
-
-Allows one to specify alternate binding schema for certain keys. Currently valid values are "Return=Next" (which causes pressing the [Return] key to advance the focus to the next widget in the main window); and "Down=Popup", which causes the [Down-arrow] key to pop up the selection listbox. 
-
 =back
 
-=head1 BROWSEENTRY OPTIONS
+=head1 INHERITED OPTIONS
 
 =over 4
 
-=item B<-listwidth>
+=item B<-arrowimage>
 
-Specifies the width of the popup listbox. 
-
-=item B<-variable>
-
-Specifies the variable in which the entered value is to be stored. 
+Specifies the image to be used in the arrow button beside the entry widget. The default is an downward arrow image in the file cbxarrow.xbm 
 
 =item B<-browsecmd>
 
 Specifies a function to call when a selection is made in the popped up listbox. It is passed the widget and the text of the entry selected. This function is called after the entry variable has been assigned the value. 
+
+=item B<-choices>
+
+Specifies the list of choices to pop up. This is a reference to an array of strings specifying the choices. 
+
+=item B<-colorstate>
+
+Depreciated -- Appears to force the background of the entry widget on the Unix version to "grey95" if state is normal and a "-background" color is not specified. 
 
 =item B<-listcmd>
 
@@ -291,92 +298,111 @@ Specifies the function to call when the button next to the entry is pressed to p
 
 Specifies relief for the dropdown list (default is "sunken"). 
 
+=item B<-listwidth>
+
+Specifies the width of the popup listbox. 
+
 =item B<-maxwidth>
 
 Specifies the maximum width the entry and listbox widgets can expand to in characters. The default is zero, meaning expand to the width to accomodate the widest string in the list. 
-
-=item B<-tabcomplete>
-
-If set to "1", pressing the "<Tab>" key will cause the string in the entry field to be "auto-completed" to the next matching item in the list. If there is no match, the typed text is not changed. If it already matches a list item, then the listbox is removed from view and keyboard focus transfers to the next widget. If set to "2" and there is no match in the list, then entry is set to the default value or empty string. 
-
-=item B<-arrowimage>
-
-Specifies the image to be used in the arrow button beside the entry widget. The default is an downward arrow image in the file cbxarrow.xbm 
-
-=item B<-choices>
-
-Specifies the list of choices to pop up. This is a reference to an array of strings specifying the choices. 
 
 =item B<-state>
 
 Specifies one of four states for the widget: "normal", "readonly", "textonly", or "disabled". If the widget is "disabled" then the value may not be changed and the arrow button won't activate. If the widget is "readonly", the entry may not be edited, but it may be changed by choosing a value from the popup listbox. "textonly" means the listbox will not activate. "normal" is the default. 
 
-=item B<-colorstate>
+=item B<-tabcomplete>
 
-Depreciated -- Appears to force the background of the entry widget on the Unix version to "grey95" if state is normal and a "-background" color is not specified. 
+If set to "1", pressing the "<Tab>" key will cause the string in the entry field to be "auto-completed" to the next matching item in the list. If there is no match, the typed text is not changed. If it already matches a list item, then the listbox is removed from view and keyboard focus transfers to the next widget. If set to "2" and there is no match in the list, then entry is set to the default value or empty string. 
+
+=item B<-variable>
+
+Specifies the variable in which the entered value is to be stored. 
 
 =back
 
-=head1 WIDGIT METHODS
+=head1 WIDGET METHODS
 
 =over 4
 
-=item $jbe->B<activate>(index)
+=item $widget->B<activate>(index)
 
 activate() invokes the activate() option on the listbox to make the item with the 
 index specified by the first argument "active".  Unless a second argument is 
 passed containing a false value, the value of the "-textvariable" variable is also 
 set to this now active value.
 
-=item $jbe->B<choices>([listref])
+=item $widget->B<choices>([listref])
 
 Sets the dropdown list listbox to the list of values referenced by I<listref>, if
 specified.  Returns the current list of choices in the listbox if no arguments 
 provided.
 
-=item $jbe->B<curselection>()
+=item $widget->B<curselection>()
 
 Returns the currently-selected element in the listbox, if any, otherwise, B<undef>.
 
-=item $jbe->B<delete>(first [, last])
+=item $widget->B<delete>(first [, last])
 
 Deletes one or more elements of the listbox.  First and last are indices specifying 
 the first and last elements in the range to delete.  If last isn't specified it 
 defaults to first, i.e. a single element is deleted.
 
-=item $jbe->B<dereference>(hashkey)
+=item $widget->B<delete_byvalue>(hashkey)
+
+Deletes one or more elements of the listbox.  "hashkey" specifies the element to 
+be deleted by the value visible to the user.
+
+=item $widget->B<reference>(hashkey)
+
+Returns the actual option key value that corresponds to the choice value displayed 
+in the listbox.  (undef if there is none).  (Opposite of dereference() and 
+dereferenceOnly().
+
+=item $widget->B<dereference>(hashkey)
 
 Returns the value (displayed in the listbox) that corresponds to the choice key 
 specified by "hashkey".  If the key is not one of the valid choices or the choices 
 are a list instead of a hash, then "hashkey" is returned.
 
-=item $jbe->B<dereferenceOnly>(hashkey)
+=item $widget->B<dereferenceOnly>(hashkey)
 
 Returns 1 if the key specified by "hashkey" is one of the valid choices and the list 
 of choices is a hash, otherwise B<undef> is returned.
 
-=item $jbe->B<fetchhash>()
+=item $widget->B<get_hashref_byname>()
 
-Returns a reference to the current hash of choices if the choice list is a hash, 
+Returns a reference to the current hash of choices (keyed by the option visable to
+the user) if the choice list is a hash (reversed from the hash passed to choices()), 
 otherwise, B<undef> is returned.
 
-=item $jbe->B<get>([first [, last])
+=item $widget->B<get_hashref_byvalue>()
+
+Returns a reference to the current hash of choices (keyed by actual option value) 
+if the choice list is a hash (same as the hash passed to choices()), 
+otherwise, B<undef> is returned.
+
+=item $widget->B<get>([first [, last])
 
 get() with no arguments returns the current value of the "-textvariable" variable.  
 If any arguments are passed, they are passed directly to the listbox->get() 
 function, ie. "0", "end" to return all values of the listbox.
 
-=item $jbe->B<hasreference>(hashkey)
+=item $widget->B<get_index>(hashkey)
+
+Returns the index number in the list (zero-based) that can be used by get() of 
+the value specified by "hashkey".
+
+=item $widget->B<hasreference>(hashkey)
 
 Returns the value (displayed in the listbox) that corresponds to the choice key 
 specified by "hashkey".  If the key is not one of the valid choices or the choices 
 are a list instead of a hash, then B<undef> is returned.
 
-=item $jbe->B<index>(index)
+=item $widget->B<index>(index)
 
 Invokes and returns the result of the listbox->index() function.
 
-=item $jbe->B<insert>(index, [item | list | listref | hashref])
+=item $widget->B<insert>(index, [item | list | listref | hashref])
 
 Inserts one or more elements in the list just before the element given by index.  
 If I<index> is specified as "end" then the new elements are added to the end of the list.
@@ -385,24 +411,39 @@ then the values are displayed to the user in the dropdown list, but the values
 returned by the "-textvariable" variable or the get() function are the corresponding 
 hash key(s).
 
-=item $jbe->B<size>()
+=item $widget->B<size>()
 
 Invokes and returns the result of the listbox size() function (the number of items in 
 the list.
 
-=item $jbe->B<state>([normal | readonly | text | textonly | disabled])
+=item $widget->B<state>([normal | readonly | text | textonly | disabled])
 
 Get or set the state of the widget.
 
 
 =back
 
+=head1 AUTHOR
+
+Jim Turner, C<< <http://home.mesh.net/turnerjw/jim> >>
+
+=head1 COPYRIGHT
+
+Copyright 2001-2011 (c) Jim Turner <http://home.mesh.net/turnerjw/jim>.  
+All rights reserved.  
+
+This program is free software; you can redistribute 
+it and/or modify it under the same terms as Perl itself.
+
+This is a derived work from Tk::BrowseEntry.  Tk::BrowseEntry is 
+copyrighted by Rajappa Iyer
+
 =cut
 
 package Tk::JBrowseEntry;
 
 use vars qw($VERSION);
-$VERSION = '4.75';
+$VERSION = '4.8';
 
 use Tk;
 use Carp;
@@ -704,13 +745,16 @@ sub SetBindings
 
 	local *returnFn = sub   #HANDLES RETURN-KEY PRESSED IN ENTRY AREA.
 	{
+		shift;
+		my $keyModifier = shift || '';
+		$keyModifier .= '-'  if ($keyModifier =~ /\S/o);
 		my $altbinding = $w->{-altbinding};
-#print "returnFn0: alt=$altbinding=\n";
+#print "returnFn0: alt=$altbinding= modifier=$keyModifier=\n";
 		if ($altbinding =~ /Return\=Next/io)
 		{
 #print "returnFn1: popped=".$w->{"popped"}."=\n";
 			$w->Popdown  if  ($w->{"popped"});   #UNDISPLAYS LISTBOX.
-			$w->Callback(-browsecmd => $w, $w->Subwidget('entry')->get, 'entry.return.browse')
+			$w->Callback(-browsecmd => $w, $w->Subwidget('entry')->get, "entry.${keyModifier}return.browse")
 					if ($w->{-browse} == 1);
 			eval { shift->focusNext->focus; };
 			Tk->break;
@@ -718,7 +762,7 @@ sub SetBindings
 		elsif ($altbinding =~ /Return\=Go/io)
 		{
 			$w->Popdown  if  ($w->{"popped"});   #UNDISPLAYS LISTBOX.
-			$w->Callback(-browsecmd => $w, $w->Subwidget('entry')->get, 'entry.return.go');
+			$w->Callback(-browsecmd => $w, $w->Subwidget('entry')->get, "entry.${keyModifier}return.go");
 			Tk->break;
 		}
 		my ($state) = $w->cget( "-state" );
@@ -1031,6 +1075,12 @@ sub SetBindings
 	}
 	);
 
+	$e->bind("<Shift-Return>", [\&returnFn, 'mod.Shift']);
+	$f->bind("<Shift-Return>", [\&returnFn, 'mod.Shift']);
+	$e->bind("<Control-Return>", [\&returnFn, 'mod.Control']);
+	$f->bind("<Control-Return>", [\&returnFn, 'mod.Control']);
+	$e->bind("<Alt-Return>", [\&returnFn, 'mod.Alt']);
+	$f->bind("<Alt-Return>", [\&returnFn, 'mod.Alt']);
 	$e->bind("<Return>", \&returnFn);
 	$f->bind("<Return>", \&returnFn);
 
@@ -1257,7 +1307,8 @@ sub keyFn   #JWT: TRAP LETTERS PRESSED AND ADJUST SELECTION ACCORDINGLY.
 	if ($w->cget( "-state" ) eq "readonly")  #ADDED 20020711 TO ALLOW TYPING 1ST LETTER TO SELECT NEXT VALID ITEM!
 	{
 		&LbFindSelection($w,$mykey)  if ($mykey);  #JUMP TO 1ST ITEM STARTING WITH THIS KEY
-		$w->LbCopySelection(1,'key.$mykey');
+#		$w->LbCopySelection(1,'key.$mykey');  #CHGD. TO NEXT 20100803 - I THINK THIS IS WRONG - HOPE IT DOESN'T BREAK ANYTHING!
+		$w->LbCopySelection(1,"key.$mykey");
 		$w->Subwidget("entry")->selectionRange(0,'end')  unless ($w->{"popped"} 
 				|| $w->{-noselecttext} || !$w->Subwidget("entry")->index('end'));
 		$e->icursor('end');
@@ -1633,6 +1684,7 @@ sub choices
 		{
 			$w->delete( qw/0 end/ );
 			$w->{hashref} = {}  if (defined $w->{hashref});   #ADDED 20050125.
+			$w->{hashref_bydesc} = {}  if (defined $w->{hashref_bydesc});   #ADDED 20110226.
 			$w->insert($choices);
 		}
 
@@ -1681,13 +1733,17 @@ sub insert
 			@choiceKeys = sort { $item->{$a} cmp $item->{$b} } keys(%$item);
 			my @choiceVals = sort values(%$item);
 			$w->Subwidget('slistbox')->insert($pos, @choiceVals);
-			my $choiceReverseHashRef = (defined $w->{hashref}) ? $w->{hashref}
+			my $choiceHashRef = (defined $w->{hashref}) ? $w->{hashref}
 					: {};    #ADDED 20050125.
+			my $choiceReverseHashRef = (defined $w->{hashref_bydesc}) ? $w->{hashref_bydesc}
+					: {};    #ADDED 20110226.
 			for (my $i=0;$i<=$#choiceKeys;$i++)   #ADDED 20050125.
 			{
+				$choiceHashRef->{$choiceKeys[$i]} = $choiceVals[$i];
 				$choiceReverseHashRef->{$choiceVals[$i]} = $choiceKeys[$i];
 			}
-			$w->{hashref} = $choiceReverseHashRef;
+			$w->{hashref_bydesc} = $choiceReverseHashRef;
+			$w->{hashref} = $choiceHashRef;
 		}
 		else
 		{
@@ -1721,20 +1777,58 @@ sub insert
 sub delete
 {
 	my $w = shift;
-	my $res = $w->Subwidget("slistbox")->delete(@_);
 	if (defined $w->{hashref})   #ADDED 20050125.
 	{
+		my ($key, $val);
 		foreach my $i (@_)
 		{
-			delete $w->{hashref}->{$i}  if (defined $w->{hashref}->{$i});
+			$val = $w->get($i);
+			$key = $w->{hashref_bydesc}->{$val};
+#print "*** DELETE:  i=$i= val=$val= key=$key= 1=".$w->{hashref_bydesc}->{$val}."= 2=".$w->{hashref}->{$key}."=\n";
+			next  unless ($val);
+			delete $w->{hashref_bydesc}->{$val}  if (defined $w->{hashref_bydesc}->{$val});
+			delete $w->{hashref}->{$key}  if (defined $w->{hashref}->{$key});
 		}
 	}
+	my $res = $w->Subwidget("slistbox")->delete(@_);
 	unless ($w->Subwidget("slistbox")->size > 0 || $w->{mylistcmd})
 	{
 		my $button = $w->Subwidget( "arrow" );
 		$button->configure( -state => "disabled", -takefocus => 0);
 	}
 	return $res;
+}
+
+sub delete_byvalue
+{
+	my $w = shift;
+	return undef  unless (@_);
+
+	my @keys = $w->get(0, 'end');
+	my $v;
+	my $delThisValue;
+	my $delCnt = 0;
+	while (@_)
+	{
+		$delThisValue = shift;
+		if (defined $w->{hashref})   #ADDED 20050125.
+		{
+			for (my $k=0;$k<=$#keys;$k++)
+			{
+				if ($keys[$k] eq $delThisValue)
+				{
+					$v = $w->{hashref_bydesc}->{$keys[$k]};
+					delete $w->{hashref_bydesc}->{$keys[$k]}  if (defined $w->{hashref_bydesc}->{$keys[$k]});
+					delete $w->{hashref}->{$v}  if (defined $w->{hashref}->{$v});
+					$w->Subwidget("slistbox")->delete($k);
+#print "-!!!- deleting k=$k= v=$v= keys=$keys[$k]=\n";
+					$delCnt++;
+					last;
+				}
+			}
+		}
+	}
+	return $delCnt;
 }
 
 sub curselection  #RETURN CURRENT LISTBOX SELECTION.
@@ -1894,8 +1988,8 @@ sub dereference   #USER-CALLABLE FUNCTION, ADDED 20050125.
 	my $w = shift;
 	return undef  unless (defined $_[0]);
 	my $userValue = shift;
-	return (defined($w->{hashref}) && defined($w->{hashref}->{$userValue}))
-			? $w->{hashref}->{$userValue} : $userValue;
+	return (defined($w->{hashref_bydesc}) && defined($w->{hashref_bydesc}->{$userValue}))
+			? $w->{hashref_bydesc}->{$userValue} : $userValue;
 }
 
 sub dereferenceOnly   #USER-CALLABLE FUNCTION, ADDED 20050125.
@@ -1903,8 +1997,17 @@ sub dereferenceOnly   #USER-CALLABLE FUNCTION, ADDED 20050125.
 	my $w = shift;
 	return undef  unless (defined $_[0]);
 	my $userValue = shift;
+	return (defined($w->{hashref_bydesc}) && defined($w->{hashref_bydesc}->{$userValue}))
+			? $w->{hashref_bydesc}->{$userValue} : undef;
+}
+
+sub reference   #USER-CALLABLE FUNCTION, ADDED 20110227, v. 4.8:
+{
+	my $w = shift;
+	return undef  unless (defined $_[0]);
+	my $userValue = shift;
 	return (defined($w->{hashref}) && defined($w->{hashref}->{$userValue}))
-			? $w->{hashref}->{$userValue} : undef;
+			? $w->{hashref}->{$userValue} : '';
 }
 
 sub hasreference   #USER-CALLABLE FUNCTION, ADDED 20050125.
@@ -1912,11 +2015,23 @@ sub hasreference   #USER-CALLABLE FUNCTION, ADDED 20050125.
 	my $w = shift;
 	return undef  unless (defined $_[0]);
 	my $userValue = shift;
-	return (defined($w->{hashref}) && defined($w->{hashref}->{$userValue}))
+	return (defined($w->{hashref_bydesc}) && defined($w->{hashref_bydesc}->{$userValue}))
 			? 1 : undef;
 }
 
-sub fetchhash
+sub get_hashref_byname   #USER-CALLABLE FUNCTION, ADDED 20110227, v. 4.8:
+{
+	my $w = shift;
+	return (defined $w->{hashref_bydesc}) ? $w->{hashref_bydesc} : undef;
+}
+
+sub fetchhash   #DEPRECIATED, RENAMED get_hashref_byname():
+{
+	my $w = shift;
+	return $w->get_hashref_byname;
+}
+
+sub get_hashref_byvalue   #USER-CALLABLE FUNCTION, ADDED 20110227, v. 4.8:
 {
 	my $w = shift;
 	return (defined $w->{hashref}) ? $w->{hashref} : undef;
@@ -1934,6 +2049,19 @@ sub get    #USER-CALLABLE FUNCTION, ADDED 20090210 v4.72
 		my $var_ref = $w->cget( "-textvariable" );
 		return $$var_ref;
 	}
+}
+
+sub get_index    #USER-CALLABLE FUNCTION, ADDED 20110227, v. 4.8:
+{
+	my $w = shift;
+	return undef  unless (@_);
+	my $val = shift;
+	my @keys = $w->get(0, 'end');
+	for (my $k=0;$k<=$#keys;$k++)
+	{
+		return $k  if ($keys[$k] eq $val);
+	}
+	return undef;
 }
 
 sub activate    #USER-CALLABLE FUNCTION, ADDED 20090210 v4.72

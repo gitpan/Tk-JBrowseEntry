@@ -2,7 +2,7 @@ NAME
 
     Tk::JBrowseEntry is an enhanced version of the Tk::BrowseEntry widget.
 
-	Copyright (c) 2001 - 2009 by Jim Turner, 
+	Copyright (c) 2001 - 2011 by Jim Turner, 
 	All rights reservered.  
 	JBrowseEntry  is licenced under the same licence as Perl itself.
 

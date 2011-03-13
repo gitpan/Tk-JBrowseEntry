@@ -121,3 +121,14 @@ Revision history for "ptkftp".
 	  and highlighted instead of the last one.
 4.75	- Remove accidental reference to DBI in test file (fix broken test)
 	  This closes rt.cpan.org bug#50767.
+4.8	- Use of a hash for the choices list was broken - hash was reversed 
+	  within the insert() function so that fetchhash() returned a hash that 
+	  was the opposite of what was passed to choices.  Renamed fetchhash() 
+	  function to get_hashref_byname() - still returns the reversed hash, 
+	  and fetchhash() remains in place for backwards compat.  Added new 
+	  function get_hashref_byvalue() to return the hash back out correctly!
+	  Also added new functions:  get_index('value') to return the index# 
+	  (usable by get() function of the list option displayed as 'value'); 
+	  delete_byvalue('value' [, 'value2'...]) to delete list items 
+	  by their displayed values; and reference() to return the displayed 
+	  list value for the given hash key (opposite of dereference()).
